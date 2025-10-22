@@ -1,4 +1,4 @@
-# PruebaTecnicaFlutter
+# Prueba Tecnica Flutter
 ### Este proyecto fue desarrollado como parte de una prueba técnica.
 
 ### Módulo de Búsqueda (Unsplash API)
