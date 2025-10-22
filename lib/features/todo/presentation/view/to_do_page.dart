@@ -54,7 +54,7 @@ class _ToDoView extends StatelessWidget {
     final controller = TextEditingController();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Lista de Tareas'), centerTitle: true),
+      appBar: AppBar(title: const Text('Lista de Tareas')),
       body: Column(
         children: [
           Padding(
@@ -80,41 +80,45 @@ class _ToDoView extends StatelessWidget {
                 ? const Center(child: Text('No hay tareas por hacer.'))
                 : Padding(
                     padding: const EdgeInsets.all(12),
-                    child: ListView.builder(
-                      itemCount: vm.todos.length,
-                      itemBuilder: (context, index) {
-                        final todo = vm.todos[index];
-                        return Column(
-                          children: [
-                            Dismissible(
-                              key: Key(todo.id),
-                              direction: DismissDirection.endToStart,
-                              background: Container(
-                                color: Colors.red,
-                                alignment: Alignment.centerRight,
-                                child: const Icon(
-                                  Icons.delete,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              onDismissed: (_) => vm.delete(todo.id),
-                              child: CheckboxListTile(
-                                value: todo.isDone,
-                                title: Text(
-                                  todo.title,
-                                  style: TextStyle(
-                                    decoration: todo.isDone
-                                        ? TextDecoration.lineThrough
-                                        : TextDecoration.none,
+                    child: AnimatedOpacity(
+                      duration: const Duration(milliseconds: 300),
+                      opacity: vm.todos.isEmpty ? 0.5 : 1.0,
+                      child: ListView.builder(
+                        itemCount: vm.todos.length,
+                        itemBuilder: (context, index) {
+                          final todo = vm.todos[index];
+                          return Column(
+                            children: [
+                              Dismissible(
+                                key: Key(todo.id),
+                                direction: DismissDirection.endToStart,
+                                background: Container(
+                                  color: Colors.red,
+                                  alignment: Alignment.centerRight,
+                                  child: const Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
                                   ),
                                 ),
-                                onChanged: (_) => vm.toggle(todo.id),
+                                onDismissed: (_) => vm.delete(todo.id),
+                                child: CheckboxListTile(
+                                  value: todo.isDone,
+                                  title: Text(
+                                    todo.title,
+                                    style: TextStyle(
+                                      decoration: todo.isDone
+                                          ? TextDecoration.lineThrough
+                                          : TextDecoration.none,
+                                    ),
+                                  ),
+                                  onChanged: (_) => vm.toggle(todo.id),
+                                ),
                               ),
-                            ),
-                            const Divider(height: 1),
-                          ],
-                        );
-                      },
+                              const Divider(height: 1),
+                            ],
+                          );
+                        },
+                      ),
                     ),
                   ),
           ),
